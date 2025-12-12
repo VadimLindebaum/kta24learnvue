@@ -5,26 +5,22 @@ import CharacterCard from '../components/CharacterCard.vue';
 
 let characters = ref([]);
 let info = ref({});
-let res = await axios.get('https://rickandmortyapi.com/api/character');
-console.log(res);
+await getCharacters('https://rickandmortyapi.com/api/character');
 
-characters.value = res.data.results;
-info.value = res.data.info;
-
-async function next() {
-    let res = await axios.get(info.value.next);
+async function getCharacters(url) {
+    let res = await axios.get(url);
     console.log(res);
 
     characters.value = res.data.results;
     info.value = res.data.info;
 }
 
-async function prev() {
-    let res = await axios.get(info.value.prev);
-    console.log(res);
+async function next() {
+    await getCharacters(info.value.next);
+}
 
-    characters.value = res.data.results;
-    info.value = res.data.info;
+async function prev() {
+    await getCharacters(info.value.prev);
 }
 
 </script>
