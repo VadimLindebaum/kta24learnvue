@@ -7,6 +7,7 @@ let characters = ref([]);
 let info = ref({});
 let currentPage = ref(1);
 let searchValue = ref('');
+let searchTimeout = null;
 await getCharacters('https://rickandmortyapi.com/api/character');
 
 async function getCharacters(url) {
@@ -61,9 +62,12 @@ document.addEventListener('scroll', () => {
     }
 })
 
-async function search(){
-    characters.value = [];
-    await getCharacters('https://rickandmortyapi.com/api/character?name=' + searchValue.value);
+async function search() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+        characters.value = [];
+        await getCharacters('https://rickandmortyapi.com/api/character?name=' + searchValue.value);
+    }, 1000);
 }
 
 
@@ -73,7 +77,7 @@ async function search(){
     <div class="container">
         <div class="field has-addons">
             <div class="control is-expanded">
-                <input v-model="searchValue" class="input" type="text" placeholder="Find a Character">
+                <input @input="search" v-model="searchValue" class="input" type="text" placeholder="Find a Character">
             </div>
             <div class="control">
                 <button @click="search" class="button is-info">
