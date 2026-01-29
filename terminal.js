@@ -2,21 +2,22 @@ function write(text) {
     process.stdout.write(text);
 }
 
-import boxen from 'boxen';
-import chalk from 'chalk';
-write(boxen(chalk.blue('Hello world!'), {
-    padding: 1,
-    borderStyle: 'round',
-    title: chalk.red.italic('Hello world!')
-}));
-write('\n');
-import ProgressBar from 'progress';
-
-var bar = new ProgressBar(':bar', { total: 10 });
-var timer = setInterval(function () {
-  bar.tick();
-  if (bar.complete) {
-    console.log('\ncomplete\n');
-    clearInterval(timer);
-  }
-}, 1000);
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+const argv = yargs(hideBin(process.argv))
+  .command('serve [port]', 'start the server', (yargs) => {
+    return yargs
+      .positional('port', {
+        describe: 'port to bind on',
+        default: 5000
+      })
+  }, (argv) => {
+    if (argv.verbose) console.info(`start server on :${argv.port}`)
+    serve(argv.port)
+  })
+  .option('verbose', {
+    alias: 'v',
+    type: 'boolean',
+    description: 'Run with verbose logging'
+  })
+  .parse()
