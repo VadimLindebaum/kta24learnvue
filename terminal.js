@@ -1,23 +1,7 @@
 function write(text) {
     process.stdout.write(text);
 }
-
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-const argv = yargs(hideBin(process.argv))
-  .command('serve [port]', 'start the server', (yargs) => {
-    return yargs
-      .positional('port', {
-        describe: 'port to bind on',
-        default: 5000
-      })
-  }, (argv) => {
-    if (argv.verbose) console.info(`start server on :${argv.port}`)
-    serve(argv.port)
-  })
-  .option('verbose', {
-    alias: 'v',
-    type: 'boolean',
-    description: 'Run with verbose logging'
-  })
-  .parse()
+import { input, select } from "@inquirer/prompts";
+let answer = await input({ message: 'Enter your name' });
+console.log(answer);
+answer = await select({ message: 'Choose a class', choices: ['Wizard', 'Knight', 'Rogue'] });
