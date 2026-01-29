@@ -2,34 +2,21 @@ function write(text) {
     process.stdout.write(text);
 }
 
-const ESC = '\x1B';
+import boxen from 'boxen';
+import chalk from 'chalk';
+write(boxen(chalk.blue('Hello world!'), {
+    padding: 1,
+    borderStyle: 'round',
+    title: chalk.red.italic('Hello world!')
+}));
+write('\n');
+import ProgressBar from 'progress';
 
-write(ESC + '[1m');
-write('Hello Terminal\n' );
-write(ESC + '[0m');
-write(ESC + '[2m');
-write('Hello Terminal\n' );
-write(ESC + '[0m');
-write(ESC + '[3m');
-write('Hello Terminal\n' );
-write(ESC + '[0m');
-write(ESC + '[4m');
-write('Hello Terminal\n');
-write(ESC + '[0m');
-write(ESC + '[5m');
-write('Hello Terminal\n');
-write(ESC + '[0m');
-write(ESC + '[7m');
-write('Hello Terminal\n');
-write(ESC + '[0m');
-write(ESC + '[8m');
-write('Hello Terminal\n');
-write(ESC + '[0m');
-write(ESC + '[9m');
-write('Hello Terminal\n' );
-write(ESC + '[0m');
-write(ESC + '[0m');
-write('Hello Terminal\n');
-setInterval(() => {
-    write('\x07');
-},1000);
+var bar = new ProgressBar(':bar', { total: 10 });
+var timer = setInterval(function () {
+  bar.tick();
+  if (bar.complete) {
+    console.log('\ncomplete\n');
+    clearInterval(timer);
+  }
+}, 1000);
